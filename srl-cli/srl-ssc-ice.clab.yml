@@ -1,0 +1,70 @@
+name: srl-ssc-ice
+
+mgmt:
+  network: srl-ssc-ice-lab-mgmt
+  ipv4-subnet: 172.20.20.0/24
+  ipv6-subnet: 2001:172:20:20::/64
+
+prefix: ""
+topology:
+  defaults:
+    kind: nokia_srlinux
+  kinds:
+    nokia_srlinux:
+      type: ixr-h4
+      image: ghcr.io/nokia/srlinux:25.10.1
+    linux:
+      image: ghcr.io/srl-labs/network-multitool
+  nodes:
+    leaf1:
+      mgmt-ipv4: 172.20.20.2
+      mgmt-ipv6: 2001:172:20:20::2
+    leaf2:
+      mgmt-ipv4: 172.20.20.3
+      mgmt-ipv6: 2001:172:20:20::3
+    spine1:
+      mgmt-ipv4: 172.20.20.4
+      mgmt-ipv6: 2001:172:20:20::4
+    spine2:
+      mgmt-ipv4: 172.20.20.5
+      mgmt-ipv6: 2001:172:20:20::5
+    client1:
+      kind: linux
+      mgmt-ipv4: 172.20.20.10
+      mgmt-ipv6: 2001:172:20:20::10
+      exec:
+        - ip address add 10.100.10.10/24 dev eth1
+        - ip route add 10.100.0.0/16 via 10.100.10.11
+    client2:
+      kind: linux
+      mgmt-ipv4: 172.20.20.11
+      mgmt-ipv6: 2001:172:20:20::11
+      exec:
+        - ip address add 10.100.20.20/24 dev eth1
+        - ip route add 10.100.0.0/16 via 10.100.20.22
+    client3:
+      kind: linux
+      mgmt-ipv4: 172.20.20.12
+      mgmt-ipv6: 2001:172:20:20::12
+      exec:
+        - ip address add 10.100.30.30/24 dev eth1
+        - ip route add 10.100.0.0/16 via 10.100.30.33
+    client4:
+      kind: linux
+      mgmt-ipv4: 172.20.20.13
+      mgmt-ipv6: 2001:172:20:20::13
+      exec:
+        - ip address add 10.100.40.40/24 dev eth1
+        - ip route add 10.100.0.0/16 via 10.100.40.44
+  links:
+      # spine-leaf links
+    - endpoints: ["leaf1:e1-1", "spine1:e1-1"]
+    - endpoints: ["leaf2:e1-1", "spine2:e1-1"]    
+    - endpoints: ["leaf1:e1-2", "spine2:e1-2"]
+    - endpoints: ["leaf2:e1-2", "spine1:e1-2"]    
+    
+      # leaf-client links
+    - endpoints: ["client1:eth1","leaf1:e1-10"]
+    - endpoints: ["client2:eth1","leaf1:e1-11"]
+    - endpoints: ["client3:eth1","leaf2:e1-10"]
+    - endpoints: ["client4:eth1","leaf2:e1-11"]
