@@ -194,6 +194,9 @@ set / system netconf-server mgmt session-limit 10
 Now, delete the `session-limit`. Discard the change, then make the change again and commit.
 
 Enter state mode and verify the state of the chassis.
+```srl
+show platform chassis
+```
 
 ## Configure Interfaces
 
