@@ -60,7 +60,7 @@ git clone https://github.com/cparmaks/ssc-ice-workshop.git
 Verify that the git repo files are now available on your VM.
 
 ```
-ls -lrt ssc-ice-workshop/
+ls -lrt ssc-ice-workshop/srl-cli/
 ```
 
 
@@ -69,7 +69,7 @@ ls -lrt ssc-ice-workshop/
 To deploy the lab, run the following:
 
 ```bash
-cd ssc-ice-workshop
+cd ssc-ice-workshop/srl-cli
 sudo clab deploy -t srl-ssc-ice.clab.yml
 ```
 
